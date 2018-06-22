@@ -23,7 +23,7 @@ class Stretch:
           
             if old_value != value:
                 print('Changed Value')
-                self.writer.sendNewDeviceResponse(value, "Number", "gpio")
+                self.writer.sendNewDeviceResponse(value, "number", "gpio")
             
             if value < 1.0:
                 self.stretch_led.on()
