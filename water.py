@@ -3,6 +3,7 @@
 from gpiozero import *
 from time import sleep
 import automationhat
+from SocketWriter import *
 
 class Water:
 
@@ -11,6 +12,7 @@ class Water:
         self.run = True
         self.water_led = LED(21)
         self.water_sensor = DigitalInputDevice(17)
+        self.writer = SocketWriter("/var/iotivity/toOCFWater")
 
     def manage(self):
 
@@ -22,15 +24,15 @@ class Water:
                 if water_status == False:
                     water_status = True
                     print('Running Low on Water')
-                    ## Notify Iotivity
+                    self.writer.sendNewDeviceResponse(True, "boolean", "gpio") ## Notify Iotivity
             else:
                 self.water_led.off()
                 if water_status== True:
                     water_status = False
                     print('Plenty of Water')
-                    ## Notify Iotivity 
+                    self.writer.sendNewDeviceResponse(False, "boolean", "gpio") ## Notify Iotivity 
     
-            sleep(0.01)
+            sleep(0.2)
             #sleep(1)
 
 
